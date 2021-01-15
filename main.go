@@ -24,7 +24,7 @@ func main() {
 	conf := config_client.New(cfg, log)
 	au := auth.New(cfg, log, sto, conf)
 	//go au.AuthJob()
-	h := handler.New(cfg, log, sto, au, conf)
+	h := handler.New(cfg, log, sto, au)
 	go h.BalanceJob()
 	go h.WebsocketJob()
 	go h.BetListJob()

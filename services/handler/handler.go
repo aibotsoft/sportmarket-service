@@ -4,7 +4,6 @@ import (
 	"context"
 	pb "github.com/aibotsoft/gen/fortedpb"
 	"github.com/aibotsoft/micro/config"
-	"github.com/aibotsoft/micro/config_client"
 	"github.com/aibotsoft/sportmarket-service/pkg/balance"
 	"github.com/aibotsoft/sportmarket-service/pkg/client"
 	"github.com/aibotsoft/sportmarket-service/pkg/store"
@@ -14,18 +13,18 @@ import (
 )
 
 type Handler struct {
-	cfg     *config.Config
-	log     *zap.SugaredLogger
-	client  *client.Client
-	store   *store.Store
-	auth    *auth.Auth
-	Conf    *config_client.ConfClient
+	cfg    *config.Config
+	log    *zap.SugaredLogger
+	client *client.Client
+	store  *store.Store
+	auth   *auth.Auth
+	//Conf    *config_client.ConfClient
 	balance balance.Balance
 	wsConn  *websocket.Conn
 }
 
-func New(cfg *config.Config, log *zap.SugaredLogger, store *store.Store, auth *auth.Auth, conf *config_client.ConfClient) *Handler {
-	h := &Handler{cfg: cfg, log: log, client: client.New(cfg, log), store: store, auth: auth, Conf: conf}
+func New(cfg *config.Config, log *zap.SugaredLogger, store *store.Store, auth *auth.Auth) *Handler {
+	h := &Handler{cfg: cfg, log: log, client: client.New(cfg, log), store: store, auth: auth}
 	return h
 }
 func (h *Handler) ReleaseCheck(ctx context.Context, sb *pb.Surebet) {
@@ -39,7 +38,6 @@ func (h *Handler) ReleaseCheck(ctx context.Context, sb *pb.Surebet) {
 }
 func (h *Handler) Close() {
 	h.store.Close()
-	h.Conf.Close()
 	if h.wsConn != nil {
 		err := h.wsConn.Close()
 		if err != nil {
