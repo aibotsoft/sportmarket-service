@@ -35,6 +35,7 @@ docker_push:
 	docker push $$DOCKER_USERNAME/$$SERVICE_NAME
 
 docker_deploy: linux_build docker_build docker_login docker_push
+docker_deploy_push_local: docker_build docker_push
 
 #Команды для k8s
 kube_deploy:
