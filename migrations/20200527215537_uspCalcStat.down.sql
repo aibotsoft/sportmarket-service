@@ -1,0 +1,1 @@
+drop proc dbo.uspCalcStat
